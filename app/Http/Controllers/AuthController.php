@@ -25,6 +25,12 @@ class AuthController extends Controller
 
         return view("auth.RegisterComp");
     }
+    
+    // public function showSiteRuleForm(){
+
+    //     return view("auth.SiteRule");
+    // }
+
     // public function authorize():bool
     // {
     //     return true;

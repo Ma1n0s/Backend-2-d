@@ -13,12 +13,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::post('/RegisterComp', function(Request $request) {
-    $user = registercomp::create([
+    $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
-        // 'password' => bcrypt($request->password),
-        // 'password_confirmation' => bcrypt($request->password_confirmation),
         'name_comp' => $request->name_comp,
         'inn_comp' => $request->inn_comp
     ]);
