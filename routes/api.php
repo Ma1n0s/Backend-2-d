@@ -8,29 +8,28 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Auth\RegisterCompController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
-Route::post('/RegisterComp', function(Request $request) {
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'name_comp' => $request->name_comp,
-        'inn_comp' => $request->inn_comp
-    ]);
-    $token = $user->createToken('auth_token')->plainTextToken;
-    Auth::login($user, true); // true чтобы запоминанил
-    
-    return [
-        'user' => $user,
-        ' token'=> $token
-    ];
+
+Route::post('/RegisterComp', [RegisterCompController::class, 'create']);
+
+// Route::post('/AddComment', [CommentController::class, 'create']);
+
+
+
+Route::get('/comments', function(Request $request) {
+    return "123";
 });
 
-
+Route::post('/comments', function(Request $request) {
+    return "123";
+});
 
 Route::post('/register', function(Request $request) {
     $user = User::create([
@@ -44,7 +43,7 @@ Route::post('/register', function(Request $request) {
     
     return [
         'user' => $user,
-        ' token'=> $token
+        'token'=> $token
     ];
 });
 
