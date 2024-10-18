@@ -10,11 +10,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth\RegisterCompController;
+use App\Http\Controllers\Api\ServiceController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/categories', [ServiceController::class, 'categories']);
+Route::get('/services', [ServiceController::class, 'services']);
 
 
 Route::post('/RegisterComp', [RegisterCompController::class, 'create']);
@@ -22,12 +25,20 @@ Route::post('/RegisterComp', [RegisterCompController::class, 'create']);
 // Route::post('/AddComment', [CommentController::class, 'create']);
 
 
+// Route::get('/filters', [FilterController::class, 'getFiltersByCategory']);
 
-Route::get('/comments', function(Request $request) {
-    return "123";
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/comments', [CommentController::class,'store']);
+    Route::get('/posts/{postId}/comments', [CommentController::class, 'index']);
 });
 
-Route::post('/comments', function(Request $request) {
+Route::middleware('auth:sanctum')->group(function () {
+    
+});
+
+
+
+Route::get('/comments', function(Request $request) {
     return "123";
 });
 

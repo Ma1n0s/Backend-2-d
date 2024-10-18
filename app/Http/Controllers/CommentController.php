@@ -7,29 +7,27 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = Comment::query();
-
-        if ($request->has('filter')) {
-            $query->where('content', 'like', '%' . $request->filter . '%');
-        }
-
-        return response()->json($query->with('user')->get());
-    }
-
     public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required|string|max:255',
-            'user_id' => 'required|string|max:255',
+            'body' => 'required|string',
+            'post_id' => 'required|integer',
+            'parent_id' => 'nullable|integer',
         ]);
 
         $comment = Comment::create([
-            'user_id' => $request->user()->id,
-            'content' => $request->content,
+            'user_id' => auth()->id(),
+            'body' => $request->body,
+            'post_id' => $request->post_id,
+            'parent_id' => $request->parent_id,
         ]);
 
-        return response()->json($comment);
+        return response()->json($comment, 201);
+    }
+
+    public function index($postId)
+    {
+        $comments = Comment::with('replies')->where('post_id', $postId)->whereNull('parent_id')->get();
+        return response()->json($comments);
     }
 }

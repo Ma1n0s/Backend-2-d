@@ -9,11 +9,11 @@ class FiltersTableSeeder extends Seeder
     {
         Filter::create([
             'category' => 'Ремонт и строительство',
-            'filters' => json_encode(['Электрика', 'Сантехника', 'Строительные материалы']),
+            'filters' => json_encode(['1','2','3']),
         ]);
         Filter::create([
             'category' => 'Ремонт и устанвка техники',
-            'filters' => json_encode(['Бытовая техника', 'Компьютеры', 'Телефоны']),
+            'filters' => json_encode(['4','5','6']),
         ]);
     }
 }

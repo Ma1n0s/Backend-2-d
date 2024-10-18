@@ -7,9 +7,18 @@ class FilterController extends Controller
 {
     public function getFiltersByCategory(Request $request)
     {
-        $category = $request->input('category');
+        // $category = $request->input('category');
+        // $filter = Filter::where('category', $category)->first();
+
+        // return response()->json($filter ? json_decode($filter->filters) : []);
+
+        $category = $request->get('category');
         $filter = Filter::where('category', $category)->first();
 
-        return response()->json($filter ? json_decode($filter->filters) : []);
+        if ($filter) {
+            return response()->json(json_decode($filter->filters));
+        }
+
+        return response()->json([]);
     }
 }
