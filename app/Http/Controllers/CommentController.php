@@ -1,5 +1,7 @@
 <?php
 
+namespace AppHttpControllers;
+
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
@@ -7,27 +9,32 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    public function index(Request $request)
+    {
+        $comment = Comment::where('company_id', true)->get();
+        return response()->json($comment);
+        
+    }
+
     public function store(Request $request)
     {
-        $request->validate([
-            'body' => 'required|string',
-            'post_id' => 'required|integer',
-            'parent_id' => 'nullable|integer',
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'comment' => 'required|string',
+            'rating' => 'required|integer|between:1,5',
+            'company_id'  => 'required|integer',
         ]);
 
-        $comment = Comment::create([
-            'user_id' => auth()->id(),
-            'body' => $request->body,
-            'post_id' => $request->post_id,
-            'parent_id' => $request->parent_id,
-        ]);
+        // $existingComment = Comment::where('name', $request->name)->first();
+        // if ($existingComment) {
+        //     return response()->json(['message' => 'Вы уже оставили комментарий.'], 400);
+        // }
 
-        return response()->json($comment, 201);
+        $comment = Comment::create($data);
+
+        return response()->json(['message' => 'Комментарий успешно добавлен!', 'comment' => $comment], 201);
     }
 
-    public function index($postId)
-    {
-        $comments = Comment::with('replies')->where('post_id', $postId)->whereNull('parent_id')->get();
-        return response()->json($comments);
-    }
+    
 }
+

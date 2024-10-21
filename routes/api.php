@@ -11,6 +11,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth\RegisterCompController;
 use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\CompanyController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -20,27 +21,21 @@ Route::get('/categories', [ServiceController::class, 'categories']);
 Route::get('/services', [ServiceController::class, 'services']);
 
 
-Route::post('/RegisterComp', [RegisterCompController::class, 'create']);
+Route::post('/RegisterComp', [CompanyController::class, 'register']);
 
-// Route::post('/AddComment', [CommentController::class, 'create']);
+Route::get('/companies', [CompanyController::class, 'index']);
+Route::post('/companies', [CompanyController::class, 'store']);
+Route::get('/companies/{id}', [CompanyController::class, 'show']);
 
-
-// Route::get('/filters', [FilterController::class, 'getFiltersByCategory']);
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/comments', [CommentController::class,'store']);
-    Route::get('/posts/{postId}/comments', [CommentController::class, 'index']);
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    
-});
+Route::get('/comments', [CommentController::class, 'index']);
+Route::post('/comments', [CommentController::class, 'store']);
 
 
 
-Route::get('/comments', function(Request $request) {
-    return "123";
-});
+
+// Route::get('/comments', function(Request $request) {
+//     return "123";
+// });
 
 Route::post('/register', function(Request $request) {
     $user = User::create([

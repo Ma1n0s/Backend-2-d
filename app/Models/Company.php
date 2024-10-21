@@ -5,19 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class Company extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'inn_comp',
+        'name_comp',
+        'email',
         'name',
-        'comment',
-        'rating',
-        'company_id',
+        'is_confirmed',
     ];
 
-    public function user()
+    public function comments()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(Comment::class); 
     }
+
 }
+

@@ -11,5 +11,6 @@ class RegisterCompany extends Model
         'name_comp',
         'email',
         'name',
+        'is_confirmed'
     ];
 }

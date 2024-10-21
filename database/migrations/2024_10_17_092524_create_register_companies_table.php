@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('name_comp');
             $table->string('inn_comp');
+            $table->boolean('is_confirmed')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });
