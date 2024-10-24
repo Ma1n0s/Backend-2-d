@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,10 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/categories', [ServiceController::class, 'categories']);
-Route::get('/services', [ServiceController::class, 'services']);
-
-
 Route::post('/RegisterComp', [CompanyController::class, 'register']);
 
 Route::get('/companies', [CompanyController::class, 'index']);
@@ -29,15 +28,30 @@ Route::get('/companies/{id}', [CompanyController::class, 'show']);
 
 Route::get('/comments', [CommentController::class, 'index']);
 Route::post('/comments', [CommentController::class, 'store']);
+Route::get('/comments/{company_id}', [CommentController::class, 'index']);
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::put('/Profile', [ProfileController::class, 'update']);
+    Route::post('/Profile', [ProfileController::class, 'store']);
+    Route::get('/Profile', [ProfileController::class, 'show']);
+    Route::get('/profile', [ProfileController::class, 'getProfile']);
+});
+
+Route::get('/categories', [CategoryController::class, 'index']);
+// Route::post('/categories', [CategoryController::class, 'store']);
+// Route::put('/categories/{id}', [CategoryController::class, 'update']);
+// Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
+Route::get('/services/category/{id}', [ServicesController::class, 'index']);
+
+Route::get('/companies/search', [CompanyController::class, 'search']);
 
 
 
 
-// Route::get('/comments', function(Request $request) {
-//     return "123";
-// });
-
-Route::post('/register', function(Request $request) {
+Route::post('/register', function (Request $request) {
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
@@ -46,14 +60,14 @@ Route::post('/register', function(Request $request) {
     ]);
     $token = $user->createToken('auth_token')->plainTextToken;
     Auth::login($user, true); // true чтобы запоминанил
-    
+
     return [
         'user' => $user,
-        'token'=> $token
+        'token' => $token
     ];
 });
 
-Route::post('/login', function(Request $request) {
+Route::post('/login', function (Request $request) {
     $data = $request->validate([
         'email' => ['required', 'email', 'exists:users,email'],
         'password' => ['required', 'min:6'],
@@ -72,11 +86,11 @@ Route::post('/login', function(Request $request) {
     return response()->json(['error' => 'Invalid credentials'], 401);
 });
 
-Route::post('/logout', function(Request $request) {
+Route::post('/logout', function (Request $request) {
     $user = Auth::guard('sanctum')->user();
 
-        $user->User::currentAccessToken()->delete();
-        return response()->json(['message' => 'Successfully logged out']);
+    $user->User::currentAccessToken()->delete();
+    return response()->json(['message' => 'Successfully logged out']);
 
     return response()->json(['message' => 'Unauthorized'], 401);
 })->middleware('auth:sanctum');
@@ -89,8 +103,5 @@ Route::post('/user', function (Request $request) {
     return response()->json($request->user());
 })->middleware('auth:sanctum');
 
-Route::get('/data', function () {
-    return "123";
-});
 
 

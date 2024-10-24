@@ -7,17 +7,37 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function index()
+    public function search(Request $request)
     {
+        $request->validate([
+            'query' => 'required|string|max:255',
+        ]);
+
+        $query = $request->input('query');
+
+        $companies = Company::where('is_confirmed', true)->where('name_comp', 'LIKE', "%{$query}%")->get();
+
+
+        return response()->json($companies);
+    }
+
+
+    public function index(Request $request)
+    {
+
+        // sort, category, page + limit, search
+        // идея 1 10 юр услуги
         $companies = Company::where('is_confirmed', true)->get();
         return response()->json($companies);
     }
+
+
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:companies,email', 
+            'email' => 'required|email|max:255|unique:companies,email',
             'name_comp' => 'required|string|max:255',
             'inn_comp' => 'required|string|max:255',
             'is_confirmed' => 'boolean',
@@ -31,20 +51,20 @@ class CompanyController extends Controller
             'is_confirmed' => $request->is_confirmed ?? false,
         ]);
 
-        return response()->json($company, 201); 
+        return response()->json($company, 201);
     }
 
     public function show($id)
     {
-            $company = Company::findOrFail($id);
-            return response()->json($company);
+        $company = Company::findOrFail($id);
+        return response()->json($company);
     }
 
     public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:companies,email', 
+            'email' => 'required|email|max:255|unique:companies,email',
             'name_comp' => 'required|string|max:255',
             'inn_comp' => 'required|string|max:255',
             'is_confirmed' => 'boolean',

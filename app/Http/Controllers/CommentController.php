@@ -9,11 +9,10 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function index(Request $request)
+    public function index($company_id)
     {
-        $comment = Comment::where('company_id', true)->get();
-        return response()->json($comment);
-        
+        return Comment::where('company_id', $company_id)->get();
+        // return response()->json($comments);
     }
 
     public function store(Request $request)
@@ -22,19 +21,16 @@ class CommentController extends Controller
             'name' => 'required|string|max:255',
             'comment' => 'required|string',
             'rating' => 'required|integer|between:1,5',
-            'company_id'  => 'required|integer',
+            'company_id' => 'required|integer',
         ]);
 
-        // $existingComment = Comment::where('name', $request->name)->first();
-        // if ($existingComment) {
-        //     return response()->json(['message' => 'Вы уже оставили комментарий.'], 400);
-        // }
+
 
         $comment = Comment::create($data);
 
         return response()->json(['message' => 'Комментарий успешно добавлен!', 'comment' => $comment], 201);
     }
 
-    
+
 }
 

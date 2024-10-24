@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Services extends Model
 {
-    protected $services = ['name', 'category_id'];
+    protected $services =
+        [
+            'name',
+            'category_id'
+        ];
 
     public function category(): BelongsTo
     {
