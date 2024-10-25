@@ -4,21 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class ModerOrganization extends Model
 {
     protected $fillable = [
-        'user_id',
+        'inn_comp',
         'OGRN',
         'OKPO',
         'BIC',
-        'postalCode',
-        'region',
-        'city',
         'street',
         'home',
+        'region',
+        'site',
+        'comment',
+        'file',
     ];
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

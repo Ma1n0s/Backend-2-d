@@ -65,12 +65,6 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $user = Auth::user();
-        $profile = Profile::where('user_id', $user->id)->first();
-
-        if (!$profile) {
-            return response()->json(['message' => 'Профиль не найден'], 404);
-        }
 
         $data = $request->validate([
             'OGRN' => 'required|string|max:255',
@@ -83,8 +77,17 @@ class ProfileController extends Controller
             'home' => 'required|string|max:255',
         ]);
 
+        $profile = Profile::updateOrCreate(
+            ['user_id' => Auth::id()],
+            $request->only(['OGRN', 'OKPO', 'BIC', 'postalCode', 'region', 'city', 'street', 'home'])
+        );
+
         $profile->update($data);
 
         return response()->json($profile);
+
+
+
+
     }
 }

@@ -81,5 +81,31 @@ class CompanyController extends Controller
         return response()->json(['token' => 'токен'], 201);
     }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'is_confirmed' => 'required|boolean',
+        ]);
+
+        $company = Company::findOrFail($id);
+        $company->is_confirmed = $request->is_confirmed;
+        $company->save();
+
+        return response()->json(['message' => 'Компания успешно обновлена.', 'company' => $company]);
+    }
+
+    public function confirm(Request $request, $id)
+    {
+        $request->validate([
+            'is_confirmed' => 'required|boolean',
+        ]);
+
+        $company = Company::findOrFail($id);
+        $company->is_confirmed = $request->is_confirmed;
+        $company->save();
+
+        return response()->json(['message' => 'Компания успешно обновлена.', 'company' => $company]);
+    }
+
 }
 

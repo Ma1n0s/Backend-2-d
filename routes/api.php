@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ModerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfileController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -25,6 +27,7 @@ Route::post('/RegisterComp', [CompanyController::class, 'register']);
 Route::get('/companies', [CompanyController::class, 'index']);
 Route::post('/companies', [CompanyController::class, 'store']);
 Route::get('/companies/{id}', [CompanyController::class, 'show']);
+Route::put('/companies/{id}', [CompanyController::class, 'confirm']);
 
 Route::get('/comments', [CommentController::class, 'index']);
 Route::post('/comments', [CommentController::class, 'store']);
@@ -32,12 +35,13 @@ Route::get('/comments/{company_id}', [CommentController::class, 'index']);
 
 
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::put('/Profile', [ProfileController::class, 'update']);
-    Route::post('/Profile', [ProfileController::class, 'store']);
-    Route::get('/Profile', [ProfileController::class, 'show']);
-    Route::get('/profile', [ProfileController::class, 'getProfile']);
-});
+
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::put('/Profile', [ProfileController::class, 'update']);
+//     Route::post('/Profile', [ProfileController::class, 'store']);
+//     Route::get('/Profile', [ProfileController::class, 'show']);
+//     Route::get('/profile', [ProfileController::class, 'getProfile']);
+// });
 
 Route::get('/categories', [CategoryController::class, 'index']);
 // Route::post('/categories', [CategoryController::class, 'store']);
@@ -48,6 +52,12 @@ Route::get('/services/category/{id}', [ServicesController::class, 'index']);
 
 Route::get('/companies/search', [CompanyController::class, 'search']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::post('/profile', [ProfileController::class, 'update']);
+});
+
+Route::post('/Moder', [ModerController::class, 'store']);
 
 
 

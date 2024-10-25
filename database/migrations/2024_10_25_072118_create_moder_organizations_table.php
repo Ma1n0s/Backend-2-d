@@ -10,17 +10,19 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('moder_organizations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('inn_comp');
             $table->string('OGRN')->nullable();
             $table->string('OKPO')->nullable();
             $table->string('BIC')->nullable();
-            $table->string('postalCode')->nullable();
-            $table->string('region')->nullable();
-            $table->string('city')->nullable();
-            $table->string('street')->nullable();
-            $table->string('home')->nullable();
+            $table->string('street');
+            $table->string('home');
+            $table->string('region');
+            $table->string('site');
+            $table->string('comment')->nullable();
+            $table->string('file')->nullable();
+
             $table->timestamps();
         });
     }
@@ -30,7 +32,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('moder_organizations');
     }
-
 };
